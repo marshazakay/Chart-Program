@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fruit Sales Horizontal Bar Chart</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<canvas id="horizontalBarChart" width="400" height="300"></canvas>
+
+<script>
+        var fruitData = [
+            {name: "Apple", quantity: 20, color: "red"},
+            {name: "Orange", quantity: 10, color: "orange"},
+            {name: "Banana", quantity: 15, color: "yellow"},
+            {name: "Kiwi", quantity: 5, color: "green"},
+            {name: "Blueberry", quantity: 5, color: "blue"},
+            {name: "Grapes", quantity: 10, color: "purple"}
+        ];
+
+        var canvas = document.getElementById("horizontalBarChart");
+        var ctx = canvas.getContext("2d");
+
+        function drawHorizontalBarChart(data) {
+            var barHeight = 35;
+            var barMargin = 2;
+            var startX = 50;
+            var startY = 50;
+
+            var maxQuantity = Math.max.apply(Math, data.map(function(fruit) {
+                return fruit.quantity;
+            }));
+
+            data.forEach(function(fruit, index) {
+                var barWidth = (fruit.quantity / maxQuantity) * (canvas.width - 100);
+                var x = startX;
+                var y = startY + (barHeight + barMargin) * index;
+
+                ctx.beginPath();
+                ctx.moveTo(startX - 20, y + barHeight / 2);
+                ctx.lineTo(startX, y + barHeight / 2);
+                ctx.strokeStyle = "black";
+                ctx.stroke();
+
+                ctx.fillStyle = fruit.color;
+                ctx.fillRect(x, y, barWidth, barHeight);
+
+                ctx.fillStyle = "black";
+                ctx.fillText(fruit.name, x - 50, y + barHeight / 2 + 5);
+            });
+
+            ctx.beginPath();
+            ctx.moveTo(startX, canvas.height - 20);
+            ctx.lineTo(canvas.width - 20, canvas.height - 20);
+            ctx.strokeStyle = "black";
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY - 10);
+            ctx.lineTo(startX, canvas.height - 20);
+            ctx.strokeStyle = "black";
+            ctx.stroke();
+
+            ctx.font = "14px Arial";
+            ctx.fillText("Quantity", canvas.width / 2 - 20, canvas.height - 5);
+        }
+
+        drawHorizontalBarChart(fruitData);
+    </script>
+</body>
+</html>
